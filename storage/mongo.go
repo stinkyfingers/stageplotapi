@@ -3,6 +3,7 @@ package storage
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/stinkyfingers/stageplotapi/stageplot"
@@ -32,7 +33,12 @@ var (
 func NewMongo() (*Mongo, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://localhost:27017"))
+
+	url := "mongodb://localhost:27017"
+	if val := os.Getenv("MONGO_URL"); val != "" {
+		url = val
+	}
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(url))
 	if err != nil {
 		return nil, err
 	}
