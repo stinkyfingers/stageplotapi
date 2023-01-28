@@ -3,16 +3,16 @@ package stageplot
 import "github.com/google/uuid"
 
 type StagePlot struct {
-	ID          uuid.UUID   `json:"id" bson:"id"`
-	Name        string      `json:"name" bson:"name"`
-	IsPublic    bool        `json:"isPublic" bson:"isPublic"`
-	Icons       []Icon      `json:"icons" bson:"icons"`
-	InputList   InputList   `json:"inputList" bson:"inputList"`
-	MonitorList MonitorList `json:"monitorList" bson:"monitorList"`
+	ID          uuid.UUID    `json:"id" bson:"id"`
+	Name        string       `json:"name" bson:"name"`
+	IsPublic    bool         `json:"isPublic" bson:"isPublic"`
+	Icons       []Icon       `json:"icons" bson:"icons"`
+	InputList   *InputList   `json:"inputList" bson:"inputList"`
+	MonitorList *MonitorList `json:"monitorList" bson:"monitorList"`
 }
 
 type Icon struct {
-	Name     string `json:"name" bson:"monitorList"`
+	Name     string `json:"name" bson:"name"`
 	Filepath string `json:"filepath" bson:"filepath"`
 	Position [2]int `json:"position" bson:"position"`
 }
@@ -31,4 +31,12 @@ type MonitorList struct {
 type MonitorLevel struct {
 	InputChannel int `json:"inputChannel" bson:"inputChannel"`
 	Level        int `json:"level" bson:"level"`
+}
+
+type IDer interface {
+	GetID() uuid.UUID
+}
+
+func (s *StagePlot) GetID() uuid.UUID {
+	return s.ID
 }
